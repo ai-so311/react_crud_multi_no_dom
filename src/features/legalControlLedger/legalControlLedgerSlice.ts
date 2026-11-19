@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { RootState } from "../../app/store";
-import legalcontrolledgerJson from "./legalcontrolledger.json";
+import legalcontrolledgerJson from "./mainResult/legalcontrolledger.json";
 
 //lclStateを管理する
 type LCLDATA = typeof legalcontrolledgerJson;
@@ -17,7 +17,7 @@ const apiUrl = "http://localhost:3500/lcl/list";
 type APIDATALCL = LCLDATA;
 
 export const fetchAsyncGetLclList = createAsyncThunk(
-    "lcList/get",
+    "lclList/get",
     async () => {
         const { data } = await axios.get<APIDATALCL>(apiUrl);
         return { data: data };

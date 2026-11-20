@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { RootState } from "../../app/store";
-import legalcontrolledgerJson from "./mainResult/legalcontrolledger.json";
+import legalcontrolledgerJson from "./legalcontrolledger.json";
 
 //lclStateを管理する
 type LCLDATA = typeof legalcontrolledgerJson;

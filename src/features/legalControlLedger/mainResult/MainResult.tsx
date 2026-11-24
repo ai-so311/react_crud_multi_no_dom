@@ -4,7 +4,7 @@ import { messageTextData } from "../messageSlice";
 
 
 //stateの処理結果メッセージを画面に表示する処理
-const MaintResult: React.FC = () => {
+const MainResult: React.FC = () => {
 //Selectorを使ってstateの処理結果メッセージを取得し、変数に格納する
 const message = useAppSelector(messageTextData);
 
@@ -38,4 +38,4 @@ return <div className="texlt-left">{resultMessageHtml}</div>
 
 };
 
-export default MaintResult;
+export default MainResult;

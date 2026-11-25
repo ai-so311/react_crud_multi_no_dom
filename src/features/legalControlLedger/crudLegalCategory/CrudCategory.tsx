@@ -110,7 +110,7 @@ const CrudCategory: React.FC = () => {
   //各行のチェックボックスのすべてのチェックを外す
   const initCheckbox = () => {
     setAllCheckCheckbox(false);
-    dispatch(setAllUnChecked);
+    dispatch(setAllUnChecked());
   };
 
   //追加モーダルの内容を初期化する関数
@@ -145,7 +145,7 @@ const CrudCategory: React.FC = () => {
             case "sortorder":
                 insertSortorder = detail.value;
                 break;
-            case "insertColor":
+            case "color":
                 insertColor = detail.value;
                 break;
         }
@@ -265,7 +265,7 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
             case "categoryname":
                 editCategoryname = columnTitleModal.value;
                 break;
-            case "sortoder":
+            case "sortorder":
                 editSortorder = columnTitleModal.value;
                 break;
             case "color":
@@ -456,7 +456,7 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                       key={l}
                       onClick={() => {
                         dispatch(fetchAsyncGetCategory(prev.page));
-                        initCheckboxes();
+                        initCheckbox();
                         dispatch(messageClear())
                         }}
                     >
@@ -483,7 +483,7 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                       key={l}
                       onClick={() => {
                         dispatch(fetchAsyncGetCategory(nation.page));
-                        initCheckboxes();
+                        initCheckbox();
                         dispatch(messageClear())
                         }}
                     >
@@ -498,7 +498,7 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                       key={l}
                       onClick={() => {
                         dispatch(fetchAsyncGetCategory(nation.page));
-                        initCheckboxes();
+                        initCheckbox();
                         dispatch(messageClear())
                         }}
                     >
@@ -518,7 +518,7 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                       key={l}
                       onClick={() => {
                         dispatch(fetchAsyncGetCategory(next.page));
-                        initCheckboxes();
+                        initCheckbox();
                         dispatch(messageClear())
                     }}
                     >
@@ -572,8 +572,9 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                         id={columnTitle.Field}
                         name={columnTitle.Field}
                         value={columnTitle.value}
-                        onChange= {(e) => dispatch(changeInsertModal(e))}
-                        required
+                        onChange={(e) =>
+                      dispatch(changeInsertModal({ Field: e.target.name, value: e.target.value }))}       
+                      required
                       />
                     </div>
                   );
@@ -704,8 +705,10 @@ const handleDeleteSubmit = (e:React.FormEvent<HTMLFormElement>) => {
                         id={`${colmunTitlesModal.Field}Edit`}
                         name={colmunTitlesModal.Field}
                         value={colmunTitlesModal.value}
-                        onChange={(e) => dispatch(changeEditModal(e))}
-                        required
+                        onChange={(e) =>
+  dispatch(changeEditModal({ Field: e.target.name, value: e.target.value }))
+                        }
+                  required   
                       />
                     </div>
                   );

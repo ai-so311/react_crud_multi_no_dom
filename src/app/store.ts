@@ -1,15 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
-import menuSelectSlice from "../features/menu/menuSelectSlice";
-import messageSlice from "../features/legalControlLedger/messageSlice";
-import legalControlLedgerSlice from "../features/legalControlLedger/legalControlLedgerSlice";
-import crudCategorySlice from "../features/legalControlLedger/crudCategorySlice";   // 追加
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import lclReducer from "../features/legalControlLedger/legalControlLedgerSlice";
+import categoryReducer from '../features/legalControlLedger/crudCategorySlice';
+import controlLedgerReducer from '../features/legalControlLedger/crudControlLedgerSlice';
+import messageReducer from '../features/legalControlLedger/messageSlice';
+import menuSelectReducer from '../features/menu/menuSelectSlice';
 
 export const store = configureStore({
   reducer: {
-    menuSelect: menuSelectSlice,
-    lclState: legalControlLedgerSlice,
-    message: messageSlice,
-    crudCategory: crudCategorySlice,   // 追加
+    menuSelect: menuSelectReducer,
+    lclState: lclReducer,
+    message: messageReducer,
+    crudCategory: categoryReducer,
+    crudControlLedger: controlLedgerReducer,
   },
 });
 

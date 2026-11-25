@@ -1,10 +1,12 @@
+//APIサーバーからカテゴリーテーブルのデータを取得して利用するためのSlice
+
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
 import crudCategoryJson from "./crudCategory.json";
 import { RootState } from "../../app/store";
 
-// ---- 1.1 state 定義 ----
+//state 定義
 type APIDATACATEGORY = typeof crudCategoryJson;
 
 type crudCategory = {
@@ -112,7 +114,7 @@ export const fetchAsyncGetCategory = createAsyncThunk(
   }
 );
 
-//Slice定義 ----
+//Slice定義
 const crudCategorySlice = createSlice({
   name: "crudCategory",
   initialState: initialStateCategory,
@@ -220,7 +222,6 @@ const crudCategorySlice = createSlice({
     },
 
     //追加モーダルの中の入力値をクリアする関数
-        //追加モーダルの中の入力値をクリアする関数
     clearInsertModal: (state) => {
       //空の差し替え配列を用意
       const newColumnTitles: {

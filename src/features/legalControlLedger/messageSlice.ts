@@ -1,17 +1,49 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-//JSONファイルをインポート
+
 import responseJson from "./response.json";
+
 import insertCategoryJson from "./insertCategory.json";
+
 import deleteCategoryJson from "./deleteCategory.json";
+
 import editCategoryJson from "./editCategory.json";
 
+import insertControlLedgerJson from "./insertControlLedger.json";
 
+import deleteControlLedgerJson from "./deleteControlLedger.json";
+
+import editControlLedgerJson from "./editControlLedger.json";
+
+//リクエスト先URLを文字列型変数に格納
+const apiInsertCategoryUrl = "http://localhost:3500/lcl/insertLegalCategory/";
+
+const apiDeleteCategoryUrl = "http://localhost:3500/lcl/deleteLegalCategory/";
+
+const apiEditCategoryUrl = "http://localhost:3500/lcl/editLegalCategory/";
+
+const apiInsertControlLedgerUrl = "http://localhost:3500/lcl/insertLegalControlLedger/";
+
+const apiDeleteControlLedgerUrl = "http://localhost:3500/lcl/deleteLegalControlLedger/";
+
+const apiEditControlLedgerUrl = "http://localhost:3500/lcl/editLegalControlLedger/";
 
 
 //JSON型推論で型定義
 type RESPONSEDATA = typeof responseJson;
+// JSON型推論で型定義
+type INSERTDATACATEGORY = typeof insertCategoryJson;
+//削除用非同期関数:deleteAsyncCategoryの作成
+type DELETEDATACATEGORY = typeof deleteCategoryJson;
+type EDITDATACATEGORY = typeof editCategoryJson;
+
+type INSERTDATACONTROLLEDGER = typeof insertControlLedgerJson;
+
+type DELETEDATACONTROLLEDGER = typeof deleteControlLedgerJson;
+
+type EDITDATACONTROLLEDGER = typeof editControlLedgerJson;
+
 
 //stateの型を、APIサーバーからのレスポンスのJSONファイルresponse.jsonを使って定義する
 type messageText = {
@@ -27,13 +59,6 @@ const initMessageText: messageText = {
 };
 
 
-//追加用非同期関数:insertAsyncCategoryの作成
-//リクエスト先URLを文字列型変数に格納
-const apiInsertCategoryUrl = "http://localhost:3500/lcl/insertLegalCategory/";
-
-// JSON型推論で型定義
-type INSERTDATACATEGORY = typeof insertCategoryJson;
-
 //追加用非同期関数　引数はinsertData insertCategory.jsonをもとに型定義
 export const insertAsyncCategory = createAsyncThunk(
   "category/insert",
@@ -45,11 +70,6 @@ export const insertAsyncCategory = createAsyncThunk(
     return { data: data };
   }
 );
-
-//削除用非同期関数:deleteAsyncCategoryの作成
-const apiDeleteCategoryUrl = "http://localhost:3500/lcl/deleteLegalCategory/";
-
-type DELETEDATACATEGORY = typeof deleteCategoryJson;
 
 //削除用非同期関数 引数はdeleteData deleteCategory.jsonをもとに定義
 export const deleteAsyncCategory = createAsyncThunk(
@@ -63,22 +83,56 @@ export const deleteAsyncCategory = createAsyncThunk(
     }
 )
 
-//変更用非同期関数:editAsyncCategoryの作成
-const apiEditAsyncCategoryUrl = "http://localhost:3500/lcl/editLegalCategory";
-
-type EDITDATACATEGORY = typeof editCategoryJson;
-
 //変更用非同期関数 引数はeditData editCategory.jsonをもとに定義
 export const editAsyncCategory = createAsyncThunk(
     "category/edit",
     async(editData: EDITDATACATEGORY) => {
         const { data } = await axios.post<RESPONSEDATA>(
-        `${apiEditAsyncCategoryUrl}`,
+        `${apiEditCategoryUrl}`,
         editData
         );
         return { data: data};
     }
 )
+
+
+//追加用非同期関数 insertControlLedger.jsonをもとに型定義
+export const insertAsyncControlLedger = createAsyncThunk(
+    "controlLedger/insert",
+    async (insertData:INSERTDATACONTROLLEDGER) => {
+      const { data } = await axios.post<RESPONSEDATA>(
+        `${apiInsertControlLedgerUrl}`,
+        insertData
+      ); 
+      //おそらくaxios.getではdataと呼ばれる返却値以外のものも返却してくるが、そのうちのdataと呼ばれる部分だけもらっている stateのdataとは関係ないと思われる
+      return { data: data };
+    }
+  );
+  
+  export const deleteAsyncControlLedger = createAsyncThunk(
+    "controlLedger/delete",
+    async (deleteData:DELETEDATACONTROLLEDGER) => {
+      const { data } = await axios.post<RESPONSEDATA>(
+        `${apiDeleteControlLedgerUrl}`,
+        deleteData
+      );
+      //おそらくaxios.getではdataと呼ばれる返却値以外のものも返却してくるが、そのうちのdataと呼ばれる部分だけもらっている stateのdataとは関係ないと思われる
+      return { data: data };
+    }
+  );
+  
+  export const editAsyncControlLedger = createAsyncThunk(
+    "controlLedger/edit",
+    async (editData:EDITDATACONTROLLEDGER) => {
+      const { data } = await axios.post<RESPONSEDATA>(
+        `${apiEditControlLedgerUrl}`,
+        editData
+      );
+      //おそらくaxios.getではdataと呼ばれる返却値以外のものも返却してくるが、そのうちのdataと呼ばれる部分だけもらっている stateのdataとは関係ないと思われる
+      return { data: data };
+    }
+  );
+
 
 //処理結果メッセージ用のmessageSliceをcreateSliceメソッドを用いて定義する
 const messageSlice = createSlice({
@@ -107,6 +161,26 @@ const messageSlice = createSlice({
         data: action.payload.data,
       };
     });
+    builder.addCase(editAsyncCategory.fulfilled, (state, action) => {
+      return {
+        ...state, data: action.payload.data,
+      };
+    });
+    builder.addCase(insertAsyncControlLedger.fulfilled, (state, action) => {
+      return {
+        ...state, data: action.payload.data,
+      };
+    });
+    builder.addCase(deleteAsyncControlLedger.fulfilled, (state, action) => {
+      return {
+        ...state, data: action.payload.data
+      };
+    });
+    builder.addCase(editAsyncControlLedger.fulfilled, (state, action) => {
+      return {
+        ...state, data: action.payload.data
+      };
+    });
   },
 });
 
@@ -114,7 +188,7 @@ const messageSlice = createSlice({
 export const { messageClear } = messageSlice.actions;
 
 //stateの中のデータを、コンポーネントがuseSelectorに使えるようにする
-export const messageTextData = (state: RootState) => state.message.data;
+export const messageData = (state: RootState) => state.message.data;
 
 //Sliceのreducerをstoreに登録できるようにする
 export default messageSlice.reducer;

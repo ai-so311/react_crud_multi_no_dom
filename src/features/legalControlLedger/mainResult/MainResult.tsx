@@ -1,12 +1,12 @@
 import React from "react";
 import { useAppSelector } from "../../../app/hooks";
-import { messageTextData } from "../messageSlice";
+import { messageData } from "../messageSlice";
 
 
 //stateの処理結果メッセージを画面に表示する処理
 const MainResult: React.FC = () => {
 //Selectorを使ってstateの処理結果メッセージを取得し、変数に格納する
-const message = useAppSelector(messageTextData);
+const message = useAppSelector(messageData);
 
 
 //処理結果メッセージの内容の内容によるswith文で条件分岐して
@@ -34,7 +34,7 @@ switch (message.messageText) {
 }
 
 //resultMessageHtmlにタグ<div className = "text-left">を付加してreturnする
-return <div className="texlt-left">{resultMessageHtml}</div>
+return <div className="text-left">{resultMessageHtml}</div>
 
 };
 
